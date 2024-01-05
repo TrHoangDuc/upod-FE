@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stages('Run Docker Image'){
+        stage('Run Docker Image'){
           steps {
             script {
               sh "docker run -d -p 5173:5173 trhoangduc/deploy_fe:${BUILD_NUMBER}.0"
