@@ -5,8 +5,9 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
+                    previousBuildNumber = currentBuild.number - 1
                     // Retrieve the ID of the existing container (if any) based on the image name
-                    containerID = sh(returnStdout: true, script: "docker ps -a -q --filter ancestor=trhoangduc/deploy_fe")
+                    containerID = sh(returnStdout: true, script: "docker ps -a -q --filter ancestor=trhoangduc/deploy_fe:${previousBuildNumber}.0")
                     if (containerID != "") {
                         sh "docker stop ${containerID}"  // Stop the container
                     }
