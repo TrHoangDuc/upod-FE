@@ -5,10 +5,10 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    // Check if a previous container is running and stop it
-                    sh "docker inspect --format='{{.State.Running}}' ${containerID}"  // Check container state
-                    if ('true' == sh(returnStdout: true, script: "docker inspect --format='{{.State.Running}}' ${containerID}")) {
-                        sh "docker stop ${containerID}"  // Stop the container if running
+                    // Retrieve the ID of the existing container (if any) based on the image name
+                    containerID = sh(returnStdout: true, script: "docker ps -a -q --filter ancestor=trhoangduc/deploy_fe")
+                    if (containerID != "") {
+                        sh "docker stop ${containerID}"  // Stop the container
                     }
                 }
             }
