@@ -2,6 +2,18 @@ pipeline {
     agent any
 
     stages {
+        stage('Cleanup') {
+            steps {
+                script {
+                    // Check if a previous container is running and stop it
+                    sh "docker inspect --format='{{.State.Running}}' ${containerID}"  // Check container state
+                    if ('true' == sh(returnStdout: true, script: "docker inspect --format='{{.State.Running}}' ${containerID}")) {
+                        sh "docker stop ${containerID}"  // Stop the container if running
+                    }
+                }
+            }
+        }
+
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/TrHoangDuc/upod.git'
@@ -26,12 +38,13 @@ pipeline {
             }
         }
 
-        stage('Run Docker Image'){
-          steps {
-            script {
-              sh "docker run -d -p 5173:5173 trhoangduc/deploy_fe:${BUILD_NUMBER}.0"
+        stage('Run Docker Image') {
+            steps {
+                script {
+                    containerID = docker.run("-d", "-p", "5173:5173", dockerImage.id)  // Capture container ID
+                    echo "Container ID: ${containerID}"  // Output for reference
+                }
             }
-          }
         }
     }
 }
