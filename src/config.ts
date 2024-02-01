@@ -8,8 +8,7 @@ import { PATH_DASHBOARD } from './routes/paths';
 // API
 // ----------------------------------------------------------------------
 
-export const HOST_API = import.meta.env.REACT_APP_HOST_API_KEY || 'http://192.168.33.10:7000/';
-
+export const HOST_API = import.meta.env.REACT_APP_HOST_API_KEY || 'http://localhost:7000/';
 export const FIREBASE_API = {
   apiKey: import.meta.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: import.meta.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
